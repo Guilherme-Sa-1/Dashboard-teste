@@ -35,3 +35,18 @@ export async function createTask(formData: FormData) {
 
   revalidatePath("/tasks");
 }
+
+export async function toggleTask(id: string, currentStatus: boolean) {
+  await prisma.task.update({
+    where: { id },
+    data: { isCompleted: !currentStatus },
+  });
+  revalidatePath("/tasks");
+}
+
+export async function deleteTask(id: string) {
+  await prisma.task.delete({
+    where: { id },
+  });
+  revalidatePath("/tasks");
+}

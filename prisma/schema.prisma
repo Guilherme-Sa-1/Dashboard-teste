@@ -78,6 +78,19 @@ model Habit {
   updatedAt DateTime @updatedAt
 
   area Area @relation(fields: [areaId], references: [id], onDelete: Cascade)
+  logs HabitLog[] 
+}
+
+model HabitLog {
+  id        String   @id @default(uuid())
+  habitId   String
+  date      String   // Vamos usar YYYY-MM-DD
+  createdAt DateTime @default(now())
+
+  habit Habit @relation(fields: [habitId], references: [id], onDelete: Cascade)
+
+  // Garante que o mesmo hábito não seja marcado duas vezes no mesmo dia
+  @@unique([habitId, date])
 }
 
 // ------------------------------------------------------
